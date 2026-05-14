@@ -4,14 +4,24 @@ This repository provides a production-ready proxy server that wraps [Ollama](htt
 
 ## Features
 
-- **OpenAI-Compatible API**: Supports `/chat/completions` and `/` (health check) endpoints.
+- **Integration with Cursor**: Easily integrates with Cursor.
 - **Streaming Support**: Full support for Server-Sent Events (SSE) streaming.
 - **Tool Use (Function Calling) Support**: Proxies tool calls and tool responses between OpenAI-style requests and Ollama's format.
 - **Image Input Support**: Handles image URLs and base64-encoded images in message content.
 - **Thinking Tokens Support**: Proxies thinking tokens from Ollama's nested message format.
-- **Authentication**: Optional API Key protection via `PROXY_API_KEY`.
-- **Environment Driven**: Easy configuration via `.env` file or environment variables.
-- **Production Ready**: Built with `FastAPI` and `uvicorn`, including proper lifespan management for HTTP clients and rotating log files.
+
+## Table of Contents
+
+- [Features](#features)
+- [Prerequisites](#prerequisites)
+- [Installation](#installation)
+- [Configuration](#configuration)
+- [Running the Server](#running-the-server)
+- [Usage](#usage)
+  - [Use with Cursor-IDE](#use-with-cursor-ide)
+  - [Use as API](#use-as-api)
+- [Logging](#logging)
+- [Troubleshooting](#troubleshooting)
 
 ## Prerequisites
 
@@ -20,7 +30,10 @@ This repository provides a production-ready proxy server that wraps [Ollama](htt
 
 ## Installation
 
-1. **Clone the repository** (or copy the files to your server).
+1. **Clone the repository**.  
+  ```bash  
+   git clone https://github.com/VishalZ0110/OllamaProxy.git
+  ```
 2. **Create a virtual environment**:
   ```bash
    python -m venv venv
@@ -31,21 +44,12 @@ This repository provides a production-ready proxy server that wraps [Ollama](htt
    pip install -r requirements.txt
   ```
 
-## Dependencies
-
-- `fastapi` - Web framework
-- `httpx` - Async HTTP client with connection pooling
-- `python-dotenv` - Environment variable loading
-- `uvicorn` - ASGI server
-
 ## Configuration
 
-Copy `.env.example` to `.env` in the root directory and customize:
-
-```env
-OLLAMA_BASE_URL=http://localhost:11434
-PROXY_API_KEY=ollama
-```
+Copy `.env.example` to `.env`
+  ```bash
+   cp .env.example .env
+  ```
 
 ### Environment Variables
 
@@ -97,7 +101,7 @@ After configuration, you can select your custom Ollama model in the Cursor chat 
 
 ### Use as API
 
-**a. Health Check**
+#### 1. Health Check
 
 Check if the proxy and the upstream Ollama service are running:
 
@@ -105,7 +109,7 @@ Check if the proxy and the upstream Ollama service are running:
 curl http://localhost:8000/
 ```
 
-**b. Chat Completions (Non-Streaming)**
+#### 2. Chat Completions (Non-Streaming)
 
 ```bash
 curl http://localhost:8000/chat/completions \
@@ -117,7 +121,7 @@ curl http://localhost:8000/chat/completions \
   }'
 ```
 
-**c. Chat Completions (Streaming)**
+#### 3. Chat Completions (Streaming)
 
 ```bash
 curl -N http://localhost:8000/chat/completions \
@@ -130,7 +134,7 @@ curl -N http://localhost:8000/chat/completions \
   }'
 ```
 
-**d. Chat Completions with Tool Calls**
+#### 4. Chat Completions with Tool Calls
 
 ```bash
 curl http://localhost:8000/chat/completions \
@@ -161,7 +165,7 @@ curl http://localhost:8000/chat/completions \
   }'
 ```
 
-**e. Chat Completions with Images**
+#### 5. Chat Completions with Images
 
 ```bash
 curl http://localhost:8000/chat/completions \
